@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float maxSpeed;
+    public float jumpPower;
     Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
     Animator anim;
@@ -18,6 +19,15 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        //Jump
+        if (Input.GetButtonDown("Jump"))
+        {
+            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+
+            anim.SetBool("isJumping", true);
+
+        }
+
         //Stop Speed
         if (Input.GetButtonUp("Horizontal"))
         {   
@@ -54,6 +64,9 @@ public class PlayerMove : MonoBehaviour
             rigid.velocity = new Vector2(maxSpeed, rigid.velocity.y);
         else if (rigid.velocity.x < maxSpeed*(-1))//Left Max Speed
             rigid.velocity = new Vector2(maxSpeed*(-1), rigid.velocity.y);
+
+        //Landing Platform
+        Debug.DrawRay(rigid.position, Vector3.down, new Color(0, 1, 0));
 
 
     }
